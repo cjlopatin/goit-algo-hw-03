@@ -10,14 +10,8 @@ users = [
     {"name": "Jack Vorobey", "birthday": "1960.03.10"},
     {"name": "James Potter", "birthday": "1997.03.12"}
 ]
-
-def find_next_weekday(d, weekday: int):
-    days_ahead = weekday - d.weekday()
-    if days_ahead <= 0:
-        days_ahead += 7
-    return d + timedelta(days = days_ahead)    
-        
-    
+ 
+  
 def prepare_users(users: list):
     prepared_users =[]
     for user in users:
@@ -30,23 +24,29 @@ def prepare_users(users: list):
 
 
 def get_upcoming_birthdays(prepared_users: list, days=7):
-        today = datetime.today().date()  # Поточна дата
-        upcoming_birthdays = []
-        for user in prepared_users:  # Ітерація по підготовленим користувачам
-            birthday_this_year = user["birthday"].replace(year=today.year)  # Заміна року на поточний для дня народження цього року
+    def find_next_weekday(d, weekday: int):
+        days_ahead = weekday - d.weekday()
+        if days_ahead <= 0:
+            days_ahead += 7
+        return d + timedelta(days = days_ahead)
 
-            if birthday_this_year < today:  # Якщо дата народження вже пройшла цього року
-                birthday_this_year = birthday_this_year.replace(year=today.year + 1)  # Переносимо наступний рік
+    today = datetime.today().date()  # Поточна дата
+    upcoming_birthdays = []
+    for user in prepared_users:  # Ітерація по підготовленим користувачам
+        birthday_this_year = user["birthday"].replace(year=today.year)  # Заміна року на поточний для дня народження цього року
 
-            if 0 <= (birthday_this_year - today).days <= days:  # Якщо день народження в межах вказаного періоду
-                if birthday_this_year.weekday() >= 5:  # Якщо день народження випадає на суботу або неділю
-                    birthday_this_year = find_next_weekday(birthday_this_year, 0)  # Знаходимо наступний понеділок
+        if birthday_this_year < today:  # Якщо дата народження вже пройшла цього року
+            birthday_this_year = birthday_this_year.replace(year=today.year + 1)  # Переносимо наступний рік
 
-                congratulation_date_str = birthday_this_year.strftime('%Y.%m.%d')  # Форматуємо дату у рядок
-                upcoming_birthdays.append({
-                    "name": user["name"],
-                    "congratulation_date": congratulation_date_str
-                })
-        return upcoming_birthdays
-upcoming_birthdays = get_upcoming_birthdays(users)
-print("Список привітань на цьому тижні:", upcoming_birthdays)
+        if 0 <= (birthday_this_year - today).days <= days:  # Якщо день народження в межах вказаного періоду
+            if birthday_this_year.weekday() >= 5:  # Якщо день народження випадає на суботу або неділю
+                birthday_this_year = find_next_weekday(birthday_this_year, 0)  # Знаходимо наступний понеділок
+
+            congratulation_date_str = birthday_this_year.strftime('%Y.%m.%d')  # Форматуємо дату у рядок
+            upcoming_birthdays.append({
+                "name": user["name"],
+                "congratulation_date": congratulation_date_str
+            })
+    #return upcoming_birthdays
+    upcoming_birthdays = get_upcoming_birthdays(prepared_users)
+    print("Список привітань на цьому тижні:", upcoming_birthdays)
