@@ -1,17 +1,12 @@
-# Лопатін Євген домашка модулю 3
-# завдання 4 
-# створити функцію get_upcoming_birthdays, яка допоможе вам визначати, кого з колег потрібно привітати з Днем народження.
-
 from datetime import datetime, timedelta
 
 users = [
+    {"name": "Jack Vorobey", "birthday": "1980.03.09"},
     {"name": "John Doe", "birthday": "1985.03.08"},
-    {"name": "Jane Smith", "birthday": "1990.05.27"},
-    {"name": "Jack Vorobey", "birthday": "1980.03.10"},
-    {"name": "James Potter", "birthday": "1997.03.12"}
+    {"name": "James Potter", "birthday": "1997.03.12"},
+    {"name": "Jane Smith", "birthday": "1990.05.27"}
 ]
- 
-  
+   
 def prepare_users(users: list):
     prepared_users =[]
     for user in users:
@@ -24,16 +19,17 @@ def prepare_users(users: list):
 
 prepared_users = prepare_users(users)
 
-def find_next_weekday(d, weekday: int):
-    days_ahead = weekday - d.weekday()
-    if days_ahead <= 0:
-        days_ahead += 7
-    return d + timedelta(days = days_ahead)
-
 def get_upcoming_birthdays(prepared_users: list):
     days = 7
     today = datetime.today().date()  # Поточна дата
     upcoming_birthdays = []
+    
+    def find_next_weekday(d, weekday: int):
+        days_ahead = weekday - d.weekday()
+        if days_ahead <= 0:
+            days_ahead += 7
+        return d + timedelta(days = days_ahead)
+    
     for user in prepared_users:  # Ітерація по підготовленим користувачам
         birthday_this_year = user["birthday"].replace(year=today.year)  # Заміна року на поточний для дня народження цього року
 
@@ -49,6 +45,7 @@ def get_upcoming_birthdays(prepared_users: list):
                 "name": user["name"],
                 "congratulation_date": congratulation_date_str
             })
-        return upcoming_birthdays
+            print(upcoming_birthdays)
+            return upcoming_birthdays
 upcoming_birthdays = get_upcoming_birthdays(prepared_users)
 print("Список привітань на цьому тижні:", upcoming_birthdays)
