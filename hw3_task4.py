@@ -1,25 +1,29 @@
+# Лопатін Євген домашка модулю 3
+# завдання 4 
+# створити функцію get_upcoming_birthdays, яка допоможе вам визначати, кого з колег потрібно привітати з Днем народження.
+
 from datetime import datetime, timedelta
 
 users = [
+    {"name": "Jane Smith", "birthday": "1990.05.27"},
     {"name": "Jack Vorobey", "birthday": "1980.03.09"},
     {"name": "John Doe", "birthday": "1985.03.08"},
     {"name": "James Potter", "birthday": "1997.03.12"},
-    {"name": "Jane Smith", "birthday": "1990.05.27"}
 ]
    
-def prepare_users(users: list):
-    prepared_users =[]
-    for user in users:
+def prepare_users(users: list): # робимо функцію на нормалізацію дати до формату datetime
+    prepared_users =[] # створюємо порожній список
+    for user in users: # задаємо умови конвертація з виключенням помилок 
         try:
             birthday = datetime.strptime(user['birthday'], '%Y.%m.%d').date()
             prepared_users.append({"name": user['name'], "birthday": birthday})
-        except ValueError:
+        except ValueError: 
             print(f"Некоректна дата народження для користувача {user["name"]}")
-    return prepared_users   
+    return prepared_users   # вертаємо повний список
 
 prepared_users = prepare_users(users)
 
-def get_upcoming_birthdays(prepared_users: list):
+def get_upcoming_birthdays(prepared_users: list):  # створюємо функцію повернення списку за умовами завдання
     days = 7
     today = datetime.today().date()  # Поточна дата
     upcoming_birthdays = []
@@ -45,7 +49,7 @@ def get_upcoming_birthdays(prepared_users: list):
                 "name": user["name"],
                 "congratulation_date": congratulation_date_str
             })
-            print(upcoming_birthdays)
-            return upcoming_birthdays
-upcoming_birthdays = get_upcoming_birthdays(prepared_users)
-print("Список привітань на цьому тижні:", upcoming_birthdays)
+        
+    return upcoming_birthdays
+upcoming_birthdays = get_upcoming_birthdays(prepared_users) # застосовуємо функцию до списку
+print("Список привітань на цьому тижні:", upcoming_birthdays) # виводимо результат на термінал
