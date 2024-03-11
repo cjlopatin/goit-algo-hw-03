@@ -52,4 +52,8 @@ def get_upcoming_birthdays(prepared_users: list):  # створюємо функ
         
     return upcoming_birthdays
 upcoming_birthdays = get_upcoming_birthdays(prepared_users) # застосовуємо функцию до списку
+<<<<<<< HEAD
 print("Список привітань на цьому тижні:", upcoming_birthdays) # виводимо результат на термінал
+=======
+print("Список привітань на цьому тижні:", upcoming_birthdays) # виводимо результат на термінал
+>>>>>>> eec38f822d5a7177cbbedebffc34779f0305b1b4
