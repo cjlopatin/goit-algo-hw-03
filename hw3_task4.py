@@ -5,33 +5,35 @@
 from datetime import datetime, timedelta
 
 users = [
-    {"name": "John Doe", "birthday": "1985.03.08"},
     {"name": "Jane Smith", "birthday": "1990.05.27"},
-    {"name": "Jack Vorobey", "birthday": "1960.03.10"},
-    {"name": "James Potter", "birthday": "1997.03.12"}
+    {"name": "Jack Vorobey", "birthday": "1980.03.09"},
+    {"name": "John Doe", "birthday": "1985.03.08"},
+    {"name": "James Potter", "birthday": "1997.03.12"},
 ]
- 
-  
-def prepare_users(users: list):
-    prepared_users =[]
-    for user in users:
+   
+def prepare_users(users: list): # робимо функцію на нормалізацію дати до формату datetime
+    prepared_users =[] # створюємо порожній список
+    for user in users: # задаємо умови конвертація з виключенням помилок 
         try:
             birthday = datetime.strptime(user['birthday'], '%Y.%m.%d').date()
             prepared_users.append({"name": user['name'], "birthday": birthday})
-        except ValueError:
+        except ValueError: 
             print(f"Некоректна дата народження для користувача {user["name"]}")
-    return prepared_users   
+    return prepared_users   # вертаємо повний список
 
+prepared_users = prepare_users(users)
 
-def get_upcoming_birthdays(prepared_users: list, days=7):
+def get_upcoming_birthdays(prepared_users: list):  # створюємо функцію повернення списку за умовами завдання
+    days = 7
+    today = datetime.today().date()  # Поточна дата
+    upcoming_birthdays = []
+    
     def find_next_weekday(d, weekday: int):
         days_ahead = weekday - d.weekday()
         if days_ahead <= 0:
             days_ahead += 7
         return d + timedelta(days = days_ahead)
-
-    today = datetime.today().date()  # Поточна дата
-    upcoming_birthdays = []
+    
     for user in prepared_users:  # Ітерація по підготовленим користувачам
         birthday_this_year = user["birthday"].replace(year=today.year)  # Заміна року на поточний для дня народження цього року
 
@@ -47,6 +49,7 @@ def get_upcoming_birthdays(prepared_users: list, days=7):
                 "name": user["name"],
                 "congratulation_date": congratulation_date_str
             })
-    #return upcoming_birthdays
-    upcoming_birthdays = get_upcoming_birthdays(prepared_users)
-    print("Список привітань на цьому тижні:", upcoming_birthdays)
+        
+    return upcoming_birthdays
+upcoming_birthdays = get_upcoming_birthdays(prepared_users) # застосовуємо функцию до списку
+print("Список привітань на цьому тижні:", upcoming_birthdays) # виводимо результат на термінал
